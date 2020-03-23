@@ -40,6 +40,7 @@ func main() {
 	fmt.Println()
 
 	if *forward {
+
 		// //Read files
 		storeLinks, err := handler.ReadFile(config.StoreLinkPath)
 		checkErr(err)
