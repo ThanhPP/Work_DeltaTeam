@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/THANHPP/Work_ShortLinkTool/config"
+	"github.com/THANHPP/Work_DeltaTeam/Work_ShortLinkTool/config"
 )
 
 //CreateForwardLink Get Data from slice and create forwardlink using name.com API token
