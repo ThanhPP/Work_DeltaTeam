@@ -1,0 +1,37 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.exc
+*.dll
+*.so
+*.dylib
+*.mod
+go.sum
+**/*.exe
+**/*.exe~
+**/*.exc
+**/*.dll
+**/*.so
+**/*.dylib
+**/*.mod
+**/go.sum
+
+# Test binary, built with `go test -c`
+**/.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+**/*.out
+
+# Dependency directories (remove the comment below to include it)
+# vendor/
+
+#exe file
+**/Work_Crawler/Work_Crawler
+**/WORK_GetBrzID/WORK_GetBrzID
+**/Work_ShortLinkTool/Work_ShortLinkTool
+**/WORK_GetEin/WORK_GetEin
+
+#Config for app
+#Work_ShortLinkTool
+**/Work_ShortLinkTool/config/config.go
+**/Work_ShortLinkTool/file
