@@ -9,8 +9,8 @@ import (
 	"time"
 
 	//Edit your PATH here
-	"github.com/THANHPP/Work_ShortLinkTool/config"
-	"github.com/THANHPP/Work_ShortLinkTool/handler"
+	"github.com/THANHPP/Work_DeltaTeam/Work_ShortLinkTool/config"
+	"github.com/THANHPP/Work_DeltaTeam/Work_ShortLinkTool/handler"
 )
 
 func checkErr(err error) {
