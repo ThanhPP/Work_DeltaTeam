@@ -44,13 +44,13 @@ func main() {
 		// //Read files
 		storeLinks, err := handler.ReadFile(config.StoreLinkPath)
 		checkErr(err)
-		storeLinks1 := storeLinks[:len(storeLinks)/2]
-		storeLinks2 := storeLinks[len(storeLinks)/2:]
+		// storeLinks1 := storeLinks[:len(storeLinks)/2]
+		// storeLinks2 := storeLinks[len(storeLinks)/2:]
 
 		tempForwardLinks, err := handler.ReadFile(config.TempForwardLinkPath)
 		checkErr(err)
-		tempForwardLinks1 := tempForwardLinks[:len(tempForwardLinks)/2]
-		tempForwardLinks2 := tempForwardLinks[len(tempForwardLinks)/2:]
+		// tempForwardLinks1 := tempForwardLinks[:len(tempForwardLinks)/2]
+		// tempForwardLinks2 := tempForwardLinks[len(tempForwardLinks)/2:]
 
 		checkLen(storeLinks, tempForwardLinks)
 
@@ -68,15 +68,15 @@ func main() {
 		var sucCount2 int
 		var errCount2 int
 
-		wgForward.Add(2)
+		wgForward.Add(1)
 		go func() {
 			defer wgForward.Done()
-			result1, sucCount1, errCount1 = handler.CreateForwardLink(storeLinks1, tempForwardLinks1, config.NameAPIKey1)
+			result1, sucCount1, errCount1 = handler.CreateForwardLink(storeLinks, tempForwardLinks, config.NameAPIKey1)
 		}()
-		go func() {
-			defer wgForward.Done()
-			result2, sucCount2, errCount2 = handler.CreateForwardLink(storeLinks2, tempForwardLinks2, config.NameAPIKey1)
-		}()
+		// go func() {
+		// 	defer wgForward.Done()
+		// 	result2, sucCount2, errCount2 = handler.CreateForwardLink(storeLinks2, tempForwardLinks2, config.NameAPIKey1)
+		// }()
 		wgForward.Wait()
 
 		result := append(result1, result2...)

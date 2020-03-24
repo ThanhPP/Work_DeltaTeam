@@ -13,15 +13,17 @@ func CreateForwardLink(storeLinks []string, tempForwardLinks []string, apiKey st
 	//Start to create forward link using name.com
 	for i := 0; i < len(tempForwardLinks); i++ {
 		body := strings.NewReader(`{"host":"` + tempForwardLinks[i] + `.` + config.NameDomain + `","forwardsTo":"` + storeLinks[i] + `","type":"redirect"}`)
+		fmt.Printf("\n %+v\n %+v\n %+v\n", tempForwardLinks[i], config.NameDomain, storeLinks[i])
 		req, err := http.NewRequest("POST", "https://api.name.com/v4/domains/"+config.NameDomain+"/url/forwarding", body)
 		checkErr(err)
 		req.SetBasicAuth(config.NameUsername, apiKey)
 		req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+		fmt.Printf("\n%+v\n\n", req)
 		resp, err := http.DefaultClient.Do(req)
 		checkErr(err)
-		defer resp.Body.Close()
+		resp.Body.Close()
 
-		fmt.Println(storeLinks[i], " => ", tempForwardLinks[i], " : ", resp.StatusCode)
+		fmt.Printf("\n %+v\n %+v\n %+v\n", storeLinks[i], tempForwardLinks[i], resp.StatusCode)
 		if resp.StatusCode == 200 {
 			forwardResult = append(forwardResult, tempForwardLinks[i]+"."+config.NameDomain)
 			successForwardCount++
@@ -29,6 +31,8 @@ func CreateForwardLink(storeLinks []string, tempForwardLinks []string, apiKey st
 			forwardResult = append(forwardResult, "error : "+tempForwardLinks[i]+"."+config.NameDomain)
 			errorForwardCount++
 		}
+
+		fmt.Println(storeLinks[i], " => ", tempForwardLinks[i], " : ", resp.StatusCode)
 	}
 
 	return forwardResult, successForwardCount, errorForwardCount
