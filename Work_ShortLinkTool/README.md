@@ -13,6 +13,10 @@ _________
 
 _ Tạo 1 folder config trong đó có chứa file config.go
 - Đổi đuôi file config_template.txt -> config.go.
+- Sửa lại các lệnh import : 
+  - main.go
+  - NameComHandler.go
+  - RebrandlyHandler.go
 - Các đường dẫn có thể thay đổi tùy ý.
 - Đăng ký các API Key : name.com và rebrandly.com.
 
