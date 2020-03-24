@@ -98,7 +98,15 @@ _ Các đầu vào và đầu ra nên có định dạng .txt
 
 _ Chương trình sẽ kiểm tra số lượng link của các file và chỉ chạy khi số lượng bằng nhau
 
-- *config.StoreLinkPath* : Khi dùng forward
-- *config.TempResultForwardLinkPath* : Khi dùng forward
-- *config.TempResultForwardLinkPath* : Khi dùng short link
-- *config.SlashTagPath* : Khi dùng short link
+- Khi dùng forward
+  - *config.StoreLinkPath*
+  - *config.TempResultForwardLinkPath*
+
+- Khi dùng short link : 
+  - *config.TempResultForwardLinkPath* 
+  - *config.SlashTagPath* 
+
+_ Khi cài đặt phải tùy chỉnh split key :
+
+- Windows : **"\r\n"**
+- Ubuntu : **"\n"**
