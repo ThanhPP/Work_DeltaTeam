@@ -45,7 +45,7 @@ func main() {
 		storeLinks, err := handler.ReadFile(config.StoreLinkPath)
 		checkErr(err)
 		// storeLinks1 := storeLinks[:len(storeLinks)/2]
-		// storeLinks2 := storeLinks[len(storeLinks)/2:]
+		// storeLinks2P := storeLinks[len(storeLinks)/2:]
 
 		tempForwardLinks, err := handler.ReadFile(config.TempForwardLinkPath)
 		checkErr(err)
