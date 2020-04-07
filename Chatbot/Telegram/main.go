@@ -4,6 +4,7 @@ import (
 	"log"
 	"time"
 
+	ggsheet "github.com/THANHPP/Work_DeltaTeam/Chatbot/Telegram/handler/googlesheet"
 	tb "gopkg.in/tucnak/telebot.v2"
 )
 
@@ -24,5 +25,7 @@ func main() {
 	})
 
 	// Start the bot
-	bot1.Start()
+	//bot1.Start()
+
+	ggsheet.GetClient()
 }
