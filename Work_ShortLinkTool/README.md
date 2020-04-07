@@ -12,8 +12,12 @@ _________
 ## Cài đặt
 
 _ Tạo 1 folder config trong đó có chứa file config.go
-
-- Các đường dẫn có thể thay đổi tùy ý
+- Đổi đuôi file config_template.txt -> config.go.
+- Sửa lại các lệnh import : 
+  - main.go
+  - NameComHandler.go
+  - RebrandlyHandler.go
+- Các đường dẫn có thể thay đổi tùy ý.
 - Đăng ký các API Key : name.com và rebrandly.com.
 
 ```go
@@ -94,7 +98,15 @@ _ Các đầu vào và đầu ra nên có định dạng .txt
 
 _ Chương trình sẽ kiểm tra số lượng link của các file và chỉ chạy khi số lượng bằng nhau
 
-- *config.StoreLinkPath* : Khi dùng forward
-- *config.TempResultForwardLinkPath* : Khi dùng forward
-- *config.TempResultForwardLinkPath* : Khi dùng short link
-- *config.SlashTagPath* : Khi dùng short link
+- Khi dùng forward
+  - *config.StoreLinkPath*
+  - *config.TempResultForwardLinkPath*
+
+- Khi dùng short link : 
+  - *config.TempResultForwardLinkPath* 
+  - *config.SlashTagPath* 
+
+_ Khi cài đặt phải tùy chỉnh split key :
+
+- Windows : **"\r\n"**
+- Ubuntu : **"\n"**

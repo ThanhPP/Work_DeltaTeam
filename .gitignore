@@ -35,3 +35,7 @@ go.sum
 #Work_ShortLinkTool
 **/Work_ShortLinkTool/config/config.go
 **/Work_ShortLinkTool/file
+
+#secret file
+**/*_secret.*
+*_secret*

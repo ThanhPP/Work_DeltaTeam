@@ -1,0 +1,31 @@
+package config
+
+//NameAPIKey1 API key for name.com
+var NameAPIKey1 = ""
+
+//NameAPIKey2 API key for name.com (Concurrency)
+var NameAPIKey2 = ""
+
+//NameUsername Username for name.com
+var NameUsername = ""
+
+//NameDomain customize domain for name.com
+var NameDomain = ""
+
+//StoreLinkPath Paste store link here
+var StoreLinkPath = ""
+
+//TempForwardLinkPath Paste temp forward link here
+var TempForwardLinkPath = ""
+
+//TempResultForwardLinkPath store Forward link created
+var TempResultForwardLinkPath = ""
+
+//RebrandlyAPIKey APIKey use for rebrandly
+var RebrandlyAPIKey = ""
+
+//RebrandlyDomainID Domain ID for rebrandly
+var RebrandlyDomainID = ""
+
+//SlashTagPath store the slashtag use for rebrandly.com
+var SlashTagPath = ""

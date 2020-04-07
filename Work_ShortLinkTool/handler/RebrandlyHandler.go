@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/THANHPP/Work_ShortLinkTool/config"
+	"github.com/THANHPP/Work_DeltaTeam/Work_ShortLinkTool/config"
 )
 
 type linkCountType struct {

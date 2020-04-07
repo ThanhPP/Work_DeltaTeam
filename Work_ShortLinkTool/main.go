@@ -91,7 +91,7 @@ func main() {
 		checkErr(err)
 		for _, forwardLinkCreated := range result[:len(result)-1] {
 			fmt.Println(forwardLinkCreated)
-			f.WriteString(forwardLinkCreated + "\n")
+			f.WriteString(forwardLinkCreated + "\r\n")
 		}
 		fmt.Println(result[len(result)-1])
 		f.WriteString(result[len(result)-1])
