@@ -39,3 +39,4 @@ go.sum
 #secret file
 **/*_secret.*
 *_secret*
+Chatbot/Telegram/handler/googlesheet/telegramchatbotshortlink-064627d03d38.json

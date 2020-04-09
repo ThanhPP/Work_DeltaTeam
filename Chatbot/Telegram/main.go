@@ -1,7 +1,10 @@
 package main
 
 import (
+	"bufio"
+	"fmt"
 	"log"
+	"os"
 	"time"
 
 	ggsheet "github.com/THANHPP/Work_DeltaTeam/Chatbot/Telegram/handler/googlesheet"
@@ -26,6 +29,9 @@ func main() {
 
 	// Start the bot
 	//bot1.Start()
-
-	ggsheet.GetDataFromRage("T3736:T3740")
+	reader := bufio.NewReader(os.Stdin)
+	fmt.Printf("Import data range : ")
+	datarange, _ := reader.ReadString('\n')
+	datarange = datarange[:len(datarange)-1]
+	ggsheet.GetDataFromRage(datarange)
 }

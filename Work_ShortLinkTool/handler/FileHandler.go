@@ -3,6 +3,7 @@ package handler
 import (
 	"fmt"
 	"io/ioutil"
+	"runtime"
 	"strings"
 )
 
@@ -14,7 +15,12 @@ func ReadFile(path string) ([]string, error) {
 	if err != nil {
 		return nil, err
 	}
-	readSlice := strings.Split(string(readFile), "\r\n")
+	var readSlice []string
+	if runtime.GOOS == "windows" {
+		readSlice = strings.Split(string(readFile), "\r\n")
+	} else {
+		readSlice = strings.Split(string(readFile), "\n")
+	}
 
 	fmt.Println("Read " + path + " complete")
 	fmt.Println()

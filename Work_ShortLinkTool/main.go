@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"runtime"
 	"sync"
 	"time"
 
@@ -89,9 +90,17 @@ func main() {
 		//show forward result
 		f, err := os.Create(config.TempResultForwardLinkPath)
 		checkErr(err)
+
+		var newLineSlash string
+		if runtime.GOOS == "windows" {
+			newLineSlash = "\r\n"
+		} else {
+			newLineSlash = "\n"
+		}
+
 		for _, forwardLinkCreated := range result[:len(result)-1] {
 			fmt.Println(forwardLinkCreated)
-			f.WriteString(forwardLinkCreated + "\r\n")
+			f.WriteString(forwardLinkCreated + newLineSlash)
 		}
 		fmt.Println(result[len(result)-1])
 		f.WriteString(result[len(result)-1])
