@@ -27,5 +27,5 @@ func main() {
 	// Start the bot
 	//bot1.Start()
 
-	ggsheet.GetClient()
+	ggsheet.GetDataFromRage("T3736:T3740")
 }

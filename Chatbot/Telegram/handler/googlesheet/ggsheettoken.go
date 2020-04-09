@@ -55,8 +55,8 @@ func tokenFromFile(file string) (*oauth2.Token, error) {
 //GetClient The file token.json stores the user's access and refresh tokens, and is
 // created automatically when the authorization flow completes for the first
 // time.
-func GetClient(config *oauth2.Config) *http.Client {
-	tokFile := "googlesheetcredentials_secret.json"
+func getClient(config *oauth2.Config) *http.Client {
+	tokFile := "/home/tpp18/go/src/github.com/THANHPP/Work_DeltaTeam/Chatbot/Telegram/handler/googlesheet/token.json"
 	tok, err := tokenFromFile(tokFile)
 	if err != nil {
 		tok = getTokenFromWeb(config)
