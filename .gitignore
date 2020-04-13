@@ -30,6 +30,7 @@ go.sum
 **/WORK_GetBrzID/WORK_GetBrzID
 **/Work_ShortLinkTool/Work_ShortLinkTool
 **/WORK_GetEin/WORK_GetEin
+**/Work_DeltaTeam/Chatbot/Telegram/Telegram
 
 #Config for app
 #Work_ShortLinkTool
@@ -40,3 +41,4 @@ go.sum
 **/*_secret.*
 *_secret*
 Chatbot/Telegram/handler/googlesheet/telegramchatbotshortlink-064627d03d38.json
+Chatbot/Telegram/handler/googlesheet/credentials_secret.json
