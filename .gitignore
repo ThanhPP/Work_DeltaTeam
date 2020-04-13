@@ -25,7 +25,7 @@ go.sum
 # Dependency directories (remove the comment below to include it)
 # vendor/
 
-#exe file
+#exec file
 **/Work_Crawler/Work_Crawler
 **/WORK_GetBrzID/WORK_GetBrzID
 **/Work_ShortLinkTool/Work_ShortLinkTool
@@ -42,3 +42,5 @@ go.sum
 *_secret*
 Chatbot/Telegram/handler/googlesheet/telegramchatbotshortlink-064627d03d38.json
 Chatbot/Telegram/handler/googlesheet/credentials_secret.json
+
+*
