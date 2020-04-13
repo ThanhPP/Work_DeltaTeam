@@ -36,10 +36,10 @@ func CreateClient() (*sheets.Service, error) {
 }
 
 //GetDataFromRage get data from given range and sheetID
-func GetDataFromRage(sheetRange string) {
+func GetDataFromRage(sheetRange string) (rows []string) {
 	// constant
-	spreadsheetID := "1vyaBiR18hfUkHEh5XkqICP2Dqek9KAKk7C42uACy_R0"
-	readRange := "ProductGenLink!" + sheetRange
+	spreadsheetID := "1alTTN3sIuK-d-M16lV6gPK4M6AwBkc7UQj2nA5ZBol0"
+	readRange := "Product!" + sheetRange
 	//create a service
 	srv, err := CreateClient()
 	if err != nil {
@@ -53,9 +53,12 @@ func GetDataFromRage(sheetRange string) {
 	if len(resp.Values) == 0 {
 		fmt.Println("found nothing")
 	} else {
-		for _, row := range resp.Values {
-			fmt.Println(row)
+		for i, row := range resp.Values {
+			rows = append(rows, row[0].(string))
+			log.Println(i, "  ", row[0])
 		}
+		return rows
 	}
+	return nil
 
 }
