@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	ggs "github.com/THANHPP/Work_DeltaTeam/Chatbot/Telegram/handler/googlesheet"
+	ggs "github.com/THANHPP/Work_DeltaTeam/Chatbot/Telegram/handler/googlesheett"
 	tb "github.com/go-telegram-bot-api/telegram-bot-api"
 )
 
