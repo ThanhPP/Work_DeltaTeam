@@ -42,5 +42,3 @@ go.sum
 *_secret*
 Chatbot/Telegram/handler/googlesheet/telegramchatbotshortlink-064627d03d38.json
 Chatbot/Telegram/handler/googlesheet/credentials_secret.json
-
-*
