@@ -16,9 +16,9 @@ var (
 func getEnvPath() string {
 	if runtime.GOOS == "windows" {
 		return windowsEnvPath
-	} else {
-		return linuxEnvPath
 	}
+
+	return linuxEnvPath
 }
 
 func loadEnvFile(fileName string) error {
