@@ -3,13 +3,23 @@ package config
 import (
 	"errors"
 	"os"
+	"runtime"
 
 	"github.com/joho/godotenv"
 )
 
 var (
-	envPath = "/home/tpp18/go/src/github.com/THANHPP/Work_DeltaTeam/Chatbot/Telegram/telebot_secret.env"
+	linuxEnvPath   = "/home/tpp18/go/src/github.com/THANHPP/Work_DeltaTeam/Chatbot/Telegram/telebot_secret.env"
+	windowsEnvPath = ""
 )
+
+func getEnvPath() string {
+	if runtime.GOOS == "windows" {
+		return windowsEnvPath
+	} else {
+		return linuxEnvPath
+	}
+}
 
 func loadEnvFile(fileName string) error {
 	err := godotenv.Load(fileName)
@@ -18,7 +28,7 @@ func loadEnvFile(fileName string) error {
 
 //GetEnvKey look up value of a key in env file
 func GetEnvKey(key string) (string, error) {
-	loadEnvFile(envPath)
+	loadEnvFile(getEnvPath())
 	value, exist := os.LookupEnv(key)
 	if !exist {
 		err := errors.New("No value for " + string(key) + "found")
