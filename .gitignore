@@ -31,6 +31,8 @@ WORK_GetBrzID/WORK_GetBrzID
 Work_ShortLinkTool/Work_ShortLinkTool
 WORK_GetEin/WORK_GetEin
 
+#Test file
+*_test.go
 #Config for app
 #Work_ShortLinkTool
 **/Work_ShortLinkTool/config/config.go
