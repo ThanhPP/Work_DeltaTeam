@@ -3,13 +3,15 @@ package main
 import (
 	"log"
 
+	cf "github.com/THANHPP/Work_DeltaTeam/Chatbot/Telegram/config"
 	ggs "github.com/THANHPP/Work_DeltaTeam/Chatbot/Telegram/handler/googlesheett"
 	tb "github.com/go-telegram-bot-api/telegram-bot-api"
 )
 
 func main() {
 	// Set up a telegram bot
-	bot, err := tb.NewBotAPI("1032135930:AAG7_bSPwq8ih4rc3cBHsz5UDyYd-q9gr8g")
+	teleApiKey, err := cf.GetEnvKey("TELEGRAMBOTAPIKEY")
+	bot, err := tb.NewBotAPI(teleApiKey)
 	if err != nil {
 		panic(err)
 	}
