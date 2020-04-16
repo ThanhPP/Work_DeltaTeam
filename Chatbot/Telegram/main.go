@@ -29,7 +29,7 @@ func main() {
 			msg := tb.NewMessage(update.Message.Chat.ID, "")
 			switch update.Message.Command() {
 			case "help":
-				msg.Text = "/createShortLink [range]"
+				msg.Text = "/createshortlink [range]"
 
 			case "createShortLink":
 				arg := update.Message.CommandArguments()
@@ -44,6 +44,7 @@ func main() {
 
 			default:
 				msg.Text = "WTF :-?"
+				bot.Send(tb.NewMessage(update.Message.Chat.ID, "test"))
 			}
 
 			if _, err := bot.Send(msg); err != nil {
