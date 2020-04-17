@@ -6,6 +6,7 @@ import (
 
 	cf "github.com/THANHPP/Work_DeltaTeam/Chatbot/Telegram/config"
 	name "github.com/THANHPP/Work_DeltaTeam/Chatbot/Telegram/handler/namedotcom"
+	rb "github.com/THANHPP/Work_DeltaTeam/Chatbot/Telegram/handler/rebrandly"
 	tb "github.com/go-telegram-bot-api/telegram-bot-api"
 )
 
@@ -37,13 +38,34 @@ func main() {
 				if len(arg) < 1 {
 					msg.Text = "nothing received"
 				} else {
+					//Forward phase
 					msg1 := tb.NewMessage(update.Message.Chat.ID, "Start forwarding... Please wait")
 					bot.Send(msg1)
+
 					forwardResult, successForwardCount, errorForwardCount := name.ForwardLinks(arg)
+
+					msg2 := tb.NewMessage(update.Message.Chat.ID, "")
 					for _, link := range forwardResult {
-						msg.Text = msg.Text + link + "\n"
+						msg2.Text = msg2.Text + link + "\n"
 					}
-					msg.Text = msg.Text + fmt.Sprintf("\nSuccess count : %d\nError count : %d\n", successForwardCount, errorForwardCount)
+					msg2.Text = msg2.Text + fmt.Sprintf("\nSuccess count : %d\nError count : %d\n", successForwardCount, errorForwardCount)
+					bot.Send(msg2)
+
+					//ShortLink phase
+					msg3 := tb.NewMessage(update.Message.Chat.ID, "Start shorting... Please wait")
+					bot.Send(msg3)
+
+					shortLinkResult, successShortLinkCount, errorShortLinkCount, usedCount := rb.CreateShortLinkRebrandly(arg, forwardResult)
+
+					msg4 := tb.NewMessage(update.Message.Chat.ID, "")
+					for _, link := range shortLinkResult {
+						msg4.Text = msg4.Text + link + "\n"
+					}
+					msg4.Text = msg4.Text + fmt.Sprintf("\n Success count : %d\nError count : %d\n", successShortLinkCount, errorShortLinkCount)
+					msg4.Text = msg4.Text + fmt.Sprintf("\n Create %+v links with Rebrandly\n%+v links left", usedCount, 500-usedCount)
+					bot.Send(msg4)
+
+					msg.Text = "Short link success"
 				}
 
 			default:
