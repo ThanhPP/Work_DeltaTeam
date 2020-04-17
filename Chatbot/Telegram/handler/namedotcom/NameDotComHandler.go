@@ -19,7 +19,7 @@ func getDataFromEnv() (nameDomain string, nameAPIKey string, nameUsername string
 		log.Println("getDataFromEnv : ", err)
 		return "", "", ""
 	}
-	fmt.Println(nameDomain)
+	//fmt.Println(nameDomain)
 
 	nameAPIKey, err = config.GetEnvKey("NAMEAPIKEY")
 	if err != nil {
