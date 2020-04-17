@@ -1,11 +1,9 @@
 package namedotcom
 
 import (
-	"errors"
 	"fmt"
 	"log"
 	"net/http"
-	"strconv"
 	"strings"
 
 	"github.com/THANHPP/Work_DeltaTeam/Chatbot/Telegram/config"
@@ -67,35 +65,10 @@ func createForwardLinks(storeLinks []string, tempForwardLinks []string) (forward
 	return forwardResult, successForwardCount, errorForwardCount
 }
 
-func parseRange(inputRange string) (int, int, error) {
-	inputRange = strings.TrimSpace(inputRange)
-
-	separateIndex := strings.Index(inputRange, ":")
-	if separateIndex == -1 {
-		return -1, -1, errors.New("inputRange : Can not find : in inputRange")
-	}
-	firstNum, err1 := strconv.Atoi(inputRange[:separateIndex])
-	secondNum, err2 := strconv.Atoi(inputRange[separateIndex+1:])
-	if err1 != nil || err2 != nil {
-		log.Printf("inputRange : \n\t %+v \n\t %+v", err1, err2)
-		return -1, -1, errors.New("inputRange : Atoi")
-	}
-
-	if firstNum > secondNum {
-		return -1, -1, errors.New("Invalid range input")
-	}
-	return firstNum, secondNum, nil
-}
-
-func newRange(firstNum int, secondNum int, col string) string {
-	newStr := col + strconv.Itoa(firstNum) + ":" + col + strconv.Itoa(secondNum)
-	return newStr
-}
-
 //ForwardLinks create forward links from input range
 func ForwardLinks(inputRange string) (forwardResult []string, successForwardCount int, errorForwardCount int) {
 	//Get range
-	firstNum, secondNum, err := parseRange(inputRange)
+	firstNum, secondNum, err := ggs.ParseRange(inputRange)
 	if err != nil {
 		log.Printf("\n\t ForwardLinks : %+v \n", err)
 	}
@@ -105,8 +78,8 @@ func ForwardLinks(inputRange string) (forwardResult []string, successForwardCoun
 	tempForwardLinksCol := "U"
 
 	//Parse range
-	storeLinks := ggs.GetDataFromRage(newRange(firstNum, secondNum, storeLinksCol))
-	tempForwardLinks := ggs.GetDataFromRage(newRange(firstNum, secondNum, tempForwardLinksCol))
+	storeLinks := ggs.GetDataFromRage(ggs.NewRange(firstNum, secondNum, storeLinksCol))
+	tempForwardLinks := ggs.GetDataFromRage(ggs.NewRange(firstNum, secondNum, tempForwardLinksCol))
 
 	//Main phase
 	forwardResult, successForwardCount, errorForwardCount = createForwardLinks(storeLinks, tempForwardLinks)

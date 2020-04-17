@@ -5,8 +5,11 @@ package googlesheett
 
 import (
 	"context"
+	"errors"
 	"io/ioutil"
 	"log"
+	"strconv"
+	"strings"
 
 	"golang.org/x/oauth2/google"
 	"google.golang.org/api/sheets/v4"
@@ -64,5 +67,31 @@ func GetDataFromRage(sheetRange string) (rows []string) {
 		return rows
 	}
 	return nil
+}
 
+//ParseRange return number received from input range
+func ParseRange(inputRange string) (int, int, error) {
+	inputRange = strings.TrimSpace(inputRange)
+
+	separateIndex := strings.Index(inputRange, ":")
+	if separateIndex == -1 {
+		return -1, -1, errors.New("inputRange : Can not find : in inputRange")
+	}
+	firstNum, err1 := strconv.Atoi(inputRange[:separateIndex])
+	secondNum, err2 := strconv.Atoi(inputRange[separateIndex+1:])
+	if err1 != nil || err2 != nil {
+		log.Printf("inputRange : \n\t %+v \n\t %+v", err1, err2)
+		return -1, -1, errors.New("inputRange : Atoi")
+	}
+
+	if firstNum > secondNum {
+		return -1, -1, errors.New("Invalid range input")
+	}
+	return firstNum, secondNum, nil
+}
+
+//NewRange create range with input number and col
+func NewRange(firstNum int, secondNum int, col string) string {
+	newStr := col + strconv.Itoa(firstNum) + ":" + col + strconv.Itoa(secondNum)
+	return newStr
 }
