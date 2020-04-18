@@ -18,18 +18,18 @@ import (
 	"github.com/THANHPP/Work_DeltaTeam/Chatbot/Telegram/config"
 )
 
-var (
-	linuxGgsJSONPath, _   = config.GetEnvKey("LINUXGGSSCRPATH")
-	windowsGgsJSONPath, _ = config.GetEnvKey("WINDOWSGGSSCRPATH")
-)
-
 //CreateClient create a google sheet service using pre-config
 func createClient() (*sheets.Service, error) {
 	var path string
+	var err error
 	if runtime.GOOS == "windows" {
-		path = windowsGgsJSONPath
+		path, err = config.GetEnvKey("WINDOWSGGSSCRPATH")
 	} else {
-		path = linuxGgsJSONPath
+		path, err = config.GetEnvKey("LINUXGGSSCRPATH")
+	}
+	if err != nil {
+		log.Println("createClient path : ", path)
+		log.Println("createClient error : ", err)
 	}
 	data, err := ioutil.ReadFile(path)
 	if err != nil {
