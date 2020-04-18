@@ -10,7 +10,7 @@ import (
 
 var (
 	linuxEnvPath   = "/home/tpp18/go/src/github.com/THANHPP/Work_DeltaTeam/Chatbot/Telegram/telebot_secret.env"
-	windowsEnvPath = "C:/Go/src/github.com/THANHPP/Work_DeltaTeam/Chatbot/Telegram/telebot_secret.env"
+	windowsEnvPath = "C:\\Go\\src\\github.com\\THANHPP\\Work_DeltaTeam\\Chatbot\\Telegram\\telebot_secret.env"
 )
 
 func getEnvPath() string {

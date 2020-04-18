@@ -8,6 +8,7 @@ import (
 	"errors"
 	"io/ioutil"
 	"log"
+	"runtime"
 	"strconv"
 	"strings"
 
@@ -17,9 +18,20 @@ import (
 	"github.com/THANHPP/Work_DeltaTeam/Chatbot/Telegram/config"
 )
 
+var (
+	linuxGgsJSONPath, _   = config.GetEnvKey("LINUXGGSSCRPATH")
+	windowsGgsJSONPath, _ = config.GetEnvKey("WINDOWSGGSSCRPATH")
+)
+
 //CreateClient create a google sheet service using pre-config
 func createClient() (*sheets.Service, error) {
-	data, err := ioutil.ReadFile("/home/tpp18/go/src/github.com/THANHPP/Work_DeltaTeam/Chatbot/Telegram/handler/googlesheett/telegramchatbotshortlink-064627d03d38.json")
+	var path string
+	if runtime.GOOS == "windows" {
+		path = windowsGgsJSONPath
+	} else {
+		path = linuxGgsJSONPath
+	}
+	data, err := ioutil.ReadFile(path)
 	if err != nil {
 		log.Printf("Unable to read client secret file: %v", err)
 	}
