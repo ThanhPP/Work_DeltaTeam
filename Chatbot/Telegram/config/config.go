@@ -2,8 +2,6 @@ package config
 
 import (
 	"errors"
-	"fmt"
-	"log"
 	"os"
 	"runtime"
 
@@ -16,11 +14,9 @@ var (
 )
 
 func getEnvPath() string {
-	log.Println(runtime.GOOS)
 	if runtime.GOOS == "windows" {
 		return windowsEnvPath
 	}
-	fmt.Println(windowsEnvPath)
 	return linuxEnvPath
 }
 
@@ -31,8 +27,6 @@ func loadEnvFile(fileName string) error {
 
 //GetEnvKey look up value of a key in env file
 func GetEnvKey(key string) (string, error) {
-	log.Println(runtime.GOOS)
-	log.Println(getEnvPath())
 	loadEnvFile(getEnvPath())
 	value, exist := os.LookupEnv(key)
 	if !exist {

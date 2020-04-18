@@ -13,7 +13,6 @@ import (
 func main() {
 	// Set up a telegram bot
 	teleAPIKey, err := cf.GetEnvKey("TELEGRAMBOTAPIKEY")
-	log.Println(teleAPIKey)
 	bot, err := tb.NewBotAPI(teleAPIKey)
 	if err != nil {
 		panic(err)
