@@ -3,6 +3,7 @@ package config
 import (
 	"errors"
 	"fmt"
+	"log"
 	"os"
 	"runtime"
 
@@ -15,7 +16,7 @@ var (
 )
 
 func getEnvPath() string {
-	fmt.Println(runtime.GOOS)
+	log.Println(runtime.GOOS)
 	if runtime.GOOS == "windows" {
 		return windowsEnvPath
 	}
