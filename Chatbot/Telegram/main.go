@@ -61,16 +61,16 @@ func main() {
 					for _, link := range shortLinkResult {
 						msg4.Text = msg4.Text + link + "\n"
 					}
-					msg4.Text = msg4.Text + fmt.Sprintf("\n Success count : %d\nError count : %d\n", successShortLinkCount, errorShortLinkCount)
-					msg4.Text = msg4.Text + fmt.Sprintf("\n Create %+v links with Rebrandly\n%+v links left", usedCount, 500-usedCount)
+					msg4.Text = msg4.Text + fmt.Sprintf("\nSuccess count : %d\nError count : %d\n", successShortLinkCount, errorShortLinkCount)
+					msg4.Text = msg4.Text + fmt.Sprintf("\nCreate %+v links with Rebrandly\n%+v links left", usedCount, 500-usedCount)
 					bot.Send(msg4)
 
-					msg.Text = "Short link success"
+					msg.Text = "Short link complete"
 				}
 
 			default:
 				msg.Text = "WTF :-?"
-				bot.Send(tb.NewMessage(update.Message.Chat.ID, "test"))
+				bot.Send(tb.NewMessage(update.Message.Chat.ID, "Still alive"))
 			}
 
 			if _, err := bot.Send(msg); err != nil {
