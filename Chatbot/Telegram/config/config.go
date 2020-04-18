@@ -31,6 +31,8 @@ func loadEnvFile(fileName string) error {
 
 //GetEnvKey look up value of a key in env file
 func GetEnvKey(key string) (string, error) {
+	log.Println(runtime.GOOS)
+	log.Println(getEnvPath())
 	loadEnvFile(getEnvPath())
 	value, exist := os.LookupEnv(key)
 	if !exist {
