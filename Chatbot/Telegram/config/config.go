@@ -15,6 +15,7 @@ var (
 )
 
 func getEnvPath() string {
+	fmt.Println(runtime.GOOS)
 	if runtime.GOOS == "windows" {
 		return windowsEnvPath
 	}
