@@ -2,6 +2,7 @@ package config
 
 import (
 	"errors"
+	"fmt"
 	"os"
 	"runtime"
 
@@ -10,14 +11,14 @@ import (
 
 var (
 	linuxEnvPath   = "/home/tpp18/go/src/github.com/THANHPP/Work_DeltaTeam/Chatbot/Telegram/telebot_secret.env"
-	windowsEnvPath = "C:\\Go\\src\\github.com\\THANHPP\\Work_DeltaTeam\\Chatbot\\Telegram\\telebot_secret.env"
+	windowsEnvPath = "C:/Go/src/github.com/THANHPP/Work_DeltaTeam/Chatbot/Telegram/telebot_secret.env"
 )
 
 func getEnvPath() string {
 	if runtime.GOOS == "windows" {
 		return windowsEnvPath
 	}
-
+	fmt.Println(windowsEnvPath)
 	return linuxEnvPath
 }
 
