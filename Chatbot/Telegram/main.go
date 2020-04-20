@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"time"
 
 	cf "github.com/THANHPP/Work_DeltaTeam/Chatbot/Telegram/config"
 	name "github.com/THANHPP/Work_DeltaTeam/Chatbot/Telegram/handler/namedotcom"
@@ -38,10 +39,15 @@ func main() {
 				if len(arg) < 1 {
 					msg.Text = "nothing received"
 				} else {
-					//Forward phase
+					//FORWARD PHASE
+					//	msg 1
 					msg1 := tb.NewMessage(update.Message.Chat.ID, "Start forwarding... Please wait")
 					bot.Send(msg1)
 
+					//	timer
+					createshortlinkTimer := time.Now()
+
+					//	msg 2
 					forwardResult, successForwardCount, errorForwardCount := name.ForwardLinks(arg)
 
 					msg2 := tb.NewMessage(update.Message.Chat.ID, "")
@@ -51,21 +57,24 @@ func main() {
 					msg2.Text = msg2.Text + fmt.Sprintf("\nSuccess count : %d\nError count : %d\n", successForwardCount, errorForwardCount)
 					bot.Send(msg2)
 
-					//ShortLink phase
+					//SHORTLINK PHASE
+					//	msg 3
 					msg3 := tb.NewMessage(update.Message.Chat.ID, "Start shorting... Please wait")
 					bot.Send(msg3)
 
+					//	msg 4
 					shortLinkResult, successShortLinkCount, errorShortLinkCount, usedCount := rb.CreateShortLinkRebrandly(arg, forwardResult)
 
 					msg4 := tb.NewMessage(update.Message.Chat.ID, "")
 					for _, link := range shortLinkResult {
 						msg4.Text = msg4.Text + link + "\n"
 					}
-					msg4.Text = msg4.Text + fmt.Sprintf("\n Success count : %d\nError count : %d\n", successShortLinkCount, errorShortLinkCount)
-					msg4.Text = msg4.Text + fmt.Sprintf("\n Create %+v links with Rebrandly\n%+v links left", usedCount, 500-usedCount)
+					msg4.Text = msg4.Text + fmt.Sprintf("\nSuccess count : %d\nError count : %d\n", successShortLinkCount, errorShortLinkCount)
+					msg4.Text = msg4.Text + fmt.Sprintf("\nCreate %+v links with Rebrandly\n%+v links left", usedCount, 500-usedCount)
 					bot.Send(msg4)
 
-					msg.Text = "Short link success"
+					// msg complete
+					msg.Text = "Create link complete" + fmt.Sprintf(" in %+v", time.Since(createshortlinkTimer))
 				}
 
 			default:

@@ -95,6 +95,7 @@ func CreateShortLinkRebrandly(inputRange string, inputFwdLinks []string) (shortL
 	firstNum, secondNum, err := ggs.ParseRange(inputRange)
 	if err != nil {
 		log.Printf("\n\t ForwardLinks : %+v \n", err)
+		return nil, -1, -1, -1
 	}
 	//Column assign
 	slashTagCol := "W"
