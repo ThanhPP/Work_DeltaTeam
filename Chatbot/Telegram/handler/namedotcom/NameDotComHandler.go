@@ -1,7 +1,6 @@
 package namedotcom
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"strings"
@@ -97,11 +96,12 @@ func ForwardLinks(inputRange string) (forwardResult []string, successForwardCoun
 	var forwardResult2 []string
 	var successForwardCount2 int
 	var errorForwardCount2 int
+
 	//Concurrent func
 	wg.Add(2)
 
 	go func() {
-		fmt.Println(firstNum, int(secondNum-((secondNum-firstNum)/2)))
+		//fmt.Println(firstNum, int(secondNum-((secondNum-firstNum)/2)))
 		storeLinks1 := ggs.GetDataFromRage(ggs.NewRange(firstNum, int(secondNum-((secondNum-firstNum)/2)), storeLinksCol))
 		tempForwardLinks1 := ggs.GetDataFromRage(ggs.NewRange(firstNum, int(secondNum-((secondNum-firstNum)/2)), tempForwardLinksCol))
 
@@ -111,7 +111,7 @@ func ForwardLinks(inputRange string) (forwardResult []string, successForwardCoun
 	}()
 
 	go func() {
-		fmt.Println(int(secondNum-((secondNum-firstNum)/2)+1), secondNum)
+		//fmt.Println(int(secondNum-((secondNum-firstNum)/2)+1), secondNum)
 		storeLinks2 := ggs.GetDataFromRage(ggs.NewRange(int(secondNum-((secondNum-firstNum)/2)+1), secondNum, storeLinksCol))
 		tempForwardLinks2 := ggs.GetDataFromRage(ggs.NewRange(int(secondNum-((secondNum-firstNum)/2)+1), secondNum, tempForwardLinksCol))
 

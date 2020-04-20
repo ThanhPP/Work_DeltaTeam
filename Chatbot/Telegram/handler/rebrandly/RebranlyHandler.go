@@ -2,10 +2,10 @@ package rebrandly
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
+	"sync"
 
 	"github.com/THANHPP/Work_DeltaTeam/Chatbot/Telegram/config"
 	ggs "github.com/THANHPP/Work_DeltaTeam/Chatbot/Telegram/handler/googlesheett"
@@ -39,7 +39,7 @@ func shortLinkByRebrand(forwardLinkSlice []string, slashTagSlice []string) (shor
 		}
 		defer resp.Body.Close()
 
-		fmt.Println(forwardLinkSlice[i]+" => https://rebrand.ly/"+slashTagSlice[i], " : ", resp.StatusCode)
+		//fmt.Println(forwardLinkSlice[i]+" => https://rebrand.ly/"+slashTagSlice[i], " : ", resp.StatusCode)
 		if resp.StatusCode == 200 {
 			shortLinkResult = append(shortLinkResult, "https://rebrand.ly/"+slashTagSlice[i])
 			successCount++
@@ -60,28 +60,28 @@ func countLinkRebranly() int {
 	//START : read number of shortlink created
 	req, err := http.NewRequest("GET", "https://api.rebrandly.com/v1/links/count", nil)
 	if err != nil {
-		log.Println("countLinkRebranly")
+		log.Println("countLinkRebranly error")
 		return -1
 	}
 	req.Header.Set("Apikey", apikey)
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-		log.Println("countLinkRebranly")
+		log.Println("countLinkRebranly error")
 		return -1
 	}
 	defer resp.Body.Close()
 
 	countByte, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		log.Println("countLinkRebranly")
+		log.Println("countLinkRebranly error")
 		return -1
 	}
 
 	var linkCounter linkCountType
 	err = json.Unmarshal(countByte, &linkCounter)
 	if err != nil {
-		log.Println("countLinkRebranly")
+		log.Println("countLinkRebranly error")
 		return -1
 	}
 	//END : read number of shortlink created
@@ -101,8 +101,50 @@ func CreateShortLinkRebrandly(inputRange string, inputFwdLinks []string) (shortL
 	slashTagCol := "W"
 
 	//CreateShortLink
-	slashTagSlice := ggs.GetDataFromRage(ggs.NewRange(firstNum, secondNum, slashTagCol))
-	shortLinkResult, successCount, errorCount = shortLinkByRebrand(inputFwdLinks, slashTagSlice)
+	if dataRange := (secondNum - firstNum); dataRange <= 2 {
+		slashTagSlice := ggs.GetDataFromRage(ggs.NewRange(firstNum, secondNum, slashTagCol))
+		shortLinkResult, successCount, errorCount = shortLinkByRebrand(inputFwdLinks, slashTagSlice)
+
+		usedCount = countLinkRebranly()
+
+		return shortLinkResult, successCount, errorCount, usedCount
+	}
+
+	//CONCURRENCY
+	//Variable
+	var wg sync.WaitGroup
+
+	var shortLinkResult1 []string
+	var successCount1 int
+	var errorCount1 int
+
+	var shortLinkResult2 []string
+	var successCount2 int
+	var errorCount2 int
+
+	//Concurrent func
+	wg.Add(2)
+
+	go func() {
+		slashTagSlice1 := ggs.GetDataFromRage(ggs.NewRange(firstNum, int(secondNum-((secondNum-firstNum)/2)), slashTagCol))
+		shortLinkResult1, successCount1, errorCount1 = shortLinkByRebrand(inputFwdLinks[:len(inputFwdLinks)/2], slashTagSlice1)
+
+		wg.Done()
+	}()
+
+	go func() {
+		slashTagSlice2 := ggs.GetDataFromRage(ggs.NewRange(firstNum, int(secondNum-((secondNum-firstNum)/2)), slashTagCol))
+		shortLinkResult2, successCount2, errorCount2 = shortLinkByRebrand(inputFwdLinks[:len(inputFwdLinks)/2], slashTagSlice2)
+
+		wg.Done()
+	}()
+
+	wg.Wait()
+
+	// Return result
+	shortLinkResult = append(shortLinkResult1, shortLinkResult2...)
+	successCount = successCount1 + successCount2
+	errorCount = errorCount1 + errorCount2
 
 	usedCount = countLinkRebranly()
 	return shortLinkResult, successCount, errorCount, usedCount
