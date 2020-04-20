@@ -8,6 +8,7 @@ import (
 	"errors"
 	"io/ioutil"
 	"log"
+	"runtime"
 	"strconv"
 	"strings"
 
@@ -19,7 +20,18 @@ import (
 
 //CreateClient create a google sheet service using pre-config
 func createClient() (*sheets.Service, error) {
-	data, err := ioutil.ReadFile("/home/tpp18/go/src/github.com/THANHPP/Work_DeltaTeam/Chatbot/Telegram/handler/googlesheett/telegramchatbotshortlink-064627d03d38.json")
+	var path string
+	var err error
+	if runtime.GOOS == "windows" {
+		path, err = config.GetEnvKey("WINDOWSGGSSCRPATH")
+	} else {
+		path, err = config.GetEnvKey("LINUXGGSSCRPATH")
+	}
+	if err != nil {
+		log.Println("createClient path : ", path)
+		log.Println("createClient error : ", err)
+	}
+	data, err := ioutil.ReadFile(path)
 	if err != nil {
 		log.Printf("Unable to read client secret file: %v", err)
 	}

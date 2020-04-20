@@ -73,13 +73,17 @@ func main() {
 					msg4.Text = msg4.Text + fmt.Sprintf("\nCreate %+v links with Rebrandly\n%+v links left", usedCount, 500-usedCount)
 					bot.Send(msg4)
 
+<<<<<<< HEAD
 					// msg complete
 					msg.Text = "Create link complete" + fmt.Sprintf(" in %+v", time.Since(createshortlinkTimer))
+=======
+					msg.Text = "Short link complete"
+>>>>>>> 39277d156b6bbea43b892c6218076686dcdffadf
 				}
 
 			default:
 				msg.Text = "WTF :-?"
-				bot.Send(tb.NewMessage(update.Message.Chat.ID, "test"))
+				bot.Send(tb.NewMessage(update.Message.Chat.ID, "Still alive"))
 			}
 
 			if _, err := bot.Send(msg); err != nil {
