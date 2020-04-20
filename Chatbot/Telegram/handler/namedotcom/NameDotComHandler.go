@@ -72,10 +72,19 @@ func ForwardLinks(inputRange string) (forwardResult []string, successForwardCoun
 	firstNum, secondNum, err := ggs.ParseRange(inputRange)
 	if err != nil {
 		log.Printf("\n\t ForwardLinks : %+v \n", err)
+		return nil, -1, -1
 	}
 	//Column assign
 	storeLinksCol := "T"
 	tempForwardLinksCol := "U"
+
+	if dataRange := (secondNum - firstNum); dataRange <= 2 {
+		storeLinks := ggs.GetDataFromRage(ggs.NewRange(firstNum, secondNum, storeLinksCol))
+		tempForwardLinks := ggs.GetDataFromRage(ggs.NewRange(firstNum, secondNum, tempForwardLinksCol))
+		forwardResult, successForwardCount, errorForwardCount = createForwardLinks(storeLinks, tempForwardLinks)
+
+		return forwardResult, successForwardCount, errorForwardCount
+	}
 
 	//CONCURRENCY
 	//Variable
