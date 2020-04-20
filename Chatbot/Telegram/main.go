@@ -55,6 +55,8 @@ func main() {
 						msg2.Text = msg2.Text + link + "\n"
 					}
 					msg2.Text = msg2.Text + fmt.Sprintf("\nSuccess count : %d\nError count : %d\n", successForwardCount, errorForwardCount)
+					msg2.DisableWebPagePreview = true
+
 					bot.Send(msg2)
 
 					//SHORTLINK PHASE
@@ -71,6 +73,8 @@ func main() {
 					}
 					msg4.Text = msg4.Text + fmt.Sprintf("\nSuccess count : %d\nError count : %d\n", successShortLinkCount, errorShortLinkCount)
 					msg4.Text = msg4.Text + fmt.Sprintf("\nCreate %+v links with Rebrandly\n%+v links left", usedCount, 500-usedCount)
+					msg4.DisableWebPagePreview = true
+
 					bot.Send(msg4)
 
 					// msg complete
