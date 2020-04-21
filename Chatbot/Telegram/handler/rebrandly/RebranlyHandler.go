@@ -32,6 +32,7 @@ func getDataFromEnv() (apiKey string, domainID string) {
 func shortLinkByRebrand(forwardLinkSlice []string, slashTagSlice []string) (shortLinkResult []string, successCount int, errorCount int) {
 	apiKey, domainID := getDataFromEnv()
 	if len(forwardLinkSlice) != len(slashTagSlice) {
+		log.Printf("\n\n\tshortLinkByRebrand : forwardLinkSlice-%+v slashTagSlice-%+v\n\n", len(forwardLinkSlice), len(slashTagSlice))
 		return nil, -1, -1
 	}
 	for i := 0; i < len(forwardLinkSlice); i++ {
@@ -129,15 +130,15 @@ func CreateShortLinkRebrandly(inputRange string, inputFwdLinks []string) (shortL
 	wg.Add(2)
 
 	go func() {
-		slashTagSlice1 := ggs.GetDataFromRage(ggs.NewRange(firstNum, int(secondNum-((secondNum-firstNum)/2)), slashTagCol))
+		slashTagSlice1 := ggs.GetDataFromRage(ggs.NewRange(firstNum, int(secondNum-((secondNum-firstNum)/2))-1, slashTagCol))
 		shortLinkResult1, successCount1, errorCount1 = shortLinkByRebrand(inputFwdLinks[:len(inputFwdLinks)/2], slashTagSlice1)
 
 		wg.Done()
 	}()
 
 	go func() {
-		slashTagSlice2 := ggs.GetDataFromRage(ggs.NewRange(firstNum, int(secondNum-((secondNum-firstNum)/2)), slashTagCol))
-		shortLinkResult2, successCount2, errorCount2 = shortLinkByRebrand(inputFwdLinks[:len(inputFwdLinks)/2], slashTagSlice2)
+		slashTagSlice2 := ggs.GetDataFromRage(ggs.NewRange(int(secondNum-((secondNum-firstNum)/2)), secondNum, slashTagCol))
+		shortLinkResult2, successCount2, errorCount2 = shortLinkByRebrand(inputFwdLinks[len(inputFwdLinks)/2:], slashTagSlice2)
 
 		wg.Done()
 	}()
