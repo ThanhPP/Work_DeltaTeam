@@ -32,9 +32,9 @@ func main() {
 			msg := tb.NewMessage(update.Message.Chat.ID, "")
 			switch update.Message.Command() {
 			case "help":
-				msg.Text = "/createshortlink [range]"
+				msg.Text = "/createfwshortlink [range]"
 
-			case "createshortlink":
+			case "createfwshortlink":
 				arg := update.Message.CommandArguments()
 				if len(arg) < 1 {
 					msg.Text = "nothing received"
