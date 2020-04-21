@@ -31,6 +31,9 @@ func getDataFromEnv() (apiKey string, domainID string) {
 //ShortLinkByRebrand
 func shortLinkByRebrand(forwardLinkSlice []string, slashTagSlice []string) (shortLinkResult []string, successCount int, errorCount int) {
 	apiKey, domainID := getDataFromEnv()
+	if len(forwardLinkSlice) != len(slashTagSlice) {
+		return nil, -1, -1
+	}
 	for i := 0; i < len(forwardLinkSlice); i++ {
 		resp, err := http.Get("https://api.rebrandly.com/v1/links/new?apikey=" + apiKey + "&destination=http://" + forwardLinkSlice[i] + "&slashtag=" + slashTagSlice[i] + "&domain[id]=" + domainID)
 		// fmt.Println("https://api.rebrandly.com/v1/links/new?apikey=" + apiKey + "&destination=http://" + forwardLinkSlice[i] + "&slashtag=" + slashTagSlice[i] + "&domain[id]=" + domainID)
