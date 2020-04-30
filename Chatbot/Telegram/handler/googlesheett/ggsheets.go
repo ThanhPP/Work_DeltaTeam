@@ -45,7 +45,8 @@ func createClient() (*sheets.Service, error) {
 
 	srv, err := sheets.New(client)
 	if err != nil {
-		log.Fatalf("Unable to retrieve Sheets client: %v", err)
+		log.Printf("Unable to retrieve Sheets client: %v", err)
+		return nil, err
 	}
 
 	return srv, nil
