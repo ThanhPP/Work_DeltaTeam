@@ -12,25 +12,10 @@ import (
 
 //GetDataFromEnv get default data from env file
 func getDataFromEnv() (nameDomain string, nameAPIKey string, nameUsername string) {
-	var err error
-	nameDomain, err = config.GetEnvKey("NAMEDOMAIN")
-	if err != nil {
-		log.Println("getDataFromEnv : ", err)
-		return "", "", ""
-	}
-	//fmt.Println(nameDomain)
-
-	nameAPIKey, err = config.GetEnvKey("NAMEAPIKEY")
-	if err != nil {
-		log.Println("getDataFromEnv : ", err)
-		return "", "", ""
-	}
-
-	nameUsername, err = config.GetEnvKey("NAMEUSRNAME")
-	if err != nil {
-		log.Println("getDataFromEnv : ", err)
-		return "", "", ""
-	}
+	config := config.GetConfig()
+	nameDomain = config.GetString("NAMEDOMAIN")
+	nameAPIKey = config.GetString("NAMEAPIKEY")
+	nameUsername = config.GetString("NAMEUSRNAME")
 	return nameDomain, nameAPIKey, nameUsername
 }
 

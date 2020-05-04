@@ -1,6 +1,10 @@
 package googlesheett
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/THANHPP/Work_DeltaTeam/Chatbot/Telegram/config"
+)
 
 func TestParseRange(t *testing.T) {
 	firstNum, secondNum, err := ParseRange("3827:3899")
@@ -20,4 +24,16 @@ func TestNewRange(t *testing.T) {
 	if str != "A1:A2" {
 		t.Errorf("%+v not match A1:A2", str)
 	}
+}
+
+func TestGetDataFromRage(t *testing.T) {
+	config.Init()
+	val := GetDataFromRage("A1:A1")
+	if val[0] != "a" {
+		t.Error(val)
+	}
+}
+
+func TestGetFilePath(t *testing.T) {
+	//TODO: Find file by filename
 }

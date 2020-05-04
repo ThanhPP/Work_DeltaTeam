@@ -12,18 +12,10 @@ import (
 )
 
 func getDataFromEnv() (apiKey string, domainID string) {
-	var err error
-	apiKey, err = config.GetEnvKey("REBRANDLYAPIKEY")
-	if err != nil {
-		log.Println("getDataFromEnv-apiKey : ", err)
-		return "", ""
-	}
+	config := config.GetConfig()
 
-	domainID, err = config.GetEnvKey("REBRANDLYDOMAINID")
-	if err != nil {
-		log.Println("getDataFromEnv-domainID : ", err)
-		return "", ""
-	}
+	apiKey = config.GetString("REBRANDLYAPIKEY")
+	domainID = config.GetString("REBRANDLYDOMAINID")
 
 	return apiKey, domainID
 }

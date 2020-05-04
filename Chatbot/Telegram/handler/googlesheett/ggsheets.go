@@ -18,19 +18,29 @@ import (
 	"github.com/THANHPP/Work_DeltaTeam/Chatbot/Telegram/config"
 )
 
+var (
+	windowsPath   string
+	linuxPath     string
+	spreadSheetID string
+)
+
+func getDataFromEnv() {
+	config := config.GetConfig()
+	windowsPath = config.GetString("WINDOWSGGSSCRPATH")
+	linuxPath = config.GetString("LINUXGGSSCRPATH")
+	spreadSheetID = config.GetString("SPREADSHEETID")
+}
+
 //CreateClient create a google sheet service using pre-config
 func createClient() (*sheets.Service, error) {
+	getDataFromEnv()
 	var path string
-	var err error
 	if runtime.GOOS == "windows" {
-		path, err = config.GetEnvKey("WINDOWSGGSSCRPATH")
+		path = windowsPath
 	} else {
-		path, err = config.GetEnvKey("LINUXGGSSCRPATH")
+		path = linuxPath
 	}
-	if err != nil {
-		log.Println("createClient path : ", path)
-		log.Println("createClient error : ", err)
-	}
+
 	data, err := ioutil.ReadFile(path)
 	if err != nil {
 		log.Printf("Unable to read client secret file: %v", err)
@@ -54,11 +64,9 @@ func createClient() (*sheets.Service, error) {
 
 //GetDataFromRage get data from given range and sheetID
 func GetDataFromRage(sheetRange string) (rows []string) {
+	getDataFromEnv()
 	// constant
-	spreadsheetID, err := config.GetEnvKey("SPREADSHEETID")
-	if err != nil {
-		log.Printf("GetDataFromRage : Error %+v \n", err)
-	}
+	spreadsheetID := spreadSheetID
 	readRange := "Product!" + sheetRange
 	//create a service
 	srv, err := createClient()
