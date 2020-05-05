@@ -27,6 +27,9 @@ func main() {
 	u.Timeout = 60
 
 	updates, err := bot.GetUpdatesChan(u)
+	if err != nil {
+		panic(err)
+	}
 
 	for update := range updates {
 		//handling command
@@ -39,7 +42,7 @@ func main() {
 			case "createfwshortlink":
 				arg := update.Message.CommandArguments()
 				if len(arg) < 1 {
-					msg.Text = "nothing received"
+					msg.Text = "createfwshortlink : no argument found"
 				} else {
 					//FORWARD PHASE
 					//	msg 1
@@ -83,8 +86,16 @@ func main() {
 					msg.Text = "Create link complete" + fmt.Sprintf(" in %+v", time.Since(createshortlinkTimer))
 				}
 
+			case "setrebrandapi":
+				arg := update.Message.CommandArguments()
+				if len(arg) < 1 {
+					msg.Text = "setrebrandapi : no argument found"
+				} else {
+
+				}
+
 			default:
-				msg.Text = "WTF :-?"
+				msg.Text = "Unknown command"
 				bot.Send(tb.NewMessage(update.Message.Chat.ID, "Still alive"))
 			}
 

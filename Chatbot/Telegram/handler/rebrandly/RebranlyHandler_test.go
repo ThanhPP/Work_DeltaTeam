@@ -22,3 +22,16 @@ func TestCreateShortLinkRebrandly(t *testing.T) {
 		t.Error(errCount)
 	}
 }
+
+func TestSetRebrandlyAPIKey(t *testing.T) {
+	config.Init()
+	err := SetRebrandlyAPIKey("d2b46b231a55436db161d83e8774f3b9")
+	if err != nil {
+		t.Error(err)
+	}
+	cf := config.GetConfig()
+	val := cf.GetString("REBRANDLYAPIKEY")
+	if val != "d2b46b231a55436db161d83e8774f3b9" {
+		t.Error(val)
+	}
+}
