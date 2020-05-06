@@ -25,13 +25,17 @@ func shortLinkByRebrand(forwardLinkSlice []string, slashTagSlice []string) (shor
 	apiKey, domainID := getDataFromEnv()
 	if len(forwardLinkSlice) != len(slashTagSlice) {
 		log.Printf("\n\n\tshortLinkByRebrand : forwardLinkSlice-%+v slashTagSlice-%+v\n\n", len(forwardLinkSlice), len(slashTagSlice))
-		return nil, -1, -1
+		shortLinkResult = append(shortLinkResult, "Input length not match")
+		return shortLinkResult, -1, -1
 	}
 	for i := 0; i < len(forwardLinkSlice); i++ {
 		resp, err := http.Get("https://api.rebrandly.com/v1/links/new?apikey=" + apiKey + "&destination=http://" + forwardLinkSlice[i] + "&slashtag=" + slashTagSlice[i] + "&domain[id]=" + domainID)
 		// fmt.Println("https://api.rebrandly.com/v1/links/new?apikey=" + apiKey + "&destination=http://" + forwardLinkSlice[i] + "&slashtag=" + slashTagSlice[i] + "&domain[id]=" + domainID)
 		if err != nil {
 			log.Println("Err shortLinkByRebrand")
+			shortLinkResult = append(shortLinkResult, "shortLinkByRebrand GET REQUEST ERROR")
+			resp.Body.Close()
+			continue
 		}
 		defer resp.Body.Close()
 

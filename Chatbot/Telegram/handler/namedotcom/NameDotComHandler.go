@@ -1,6 +1,7 @@
 package namedotcom
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"strings"
@@ -28,6 +29,8 @@ func createForwardLinks(storeLinks []string, tempForwardLinks []string) (forward
 		req, err := http.NewRequest("POST", "https://api.name.com/v4/domains/"+nameDomain+"/url/forwarding", body)
 		if err != nil {
 			log.Println("CreateForwardLinks : ", err)
+			forwardResult = append(forwardResult, fmt.Sprint("CreateForwardLinks - NewRequest - err"))
+			continue
 		}
 		req.SetBasicAuth(nameUsername, nameAPIKey)
 		req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
@@ -35,6 +38,8 @@ func createForwardLinks(storeLinks []string, tempForwardLinks []string) (forward
 		resp, err := http.DefaultClient.Do(req)
 		if err != nil {
 			log.Println("CreateForwardLinks : ", err)
+			forwardResult = append(forwardResult, fmt.Sprint("CreateForwardLinks - MakeRequest - err"))
+			continue
 		}
 		resp.Body.Close()
 
