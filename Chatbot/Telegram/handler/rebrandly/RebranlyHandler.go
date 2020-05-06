@@ -34,11 +34,9 @@ func shortLinkByRebrand(forwardLinkSlice []string, slashTagSlice []string) (shor
 		if err != nil {
 			log.Println("Err shortLinkByRebrand")
 			shortLinkResult = append(shortLinkResult, "shortLinkByRebrand GET REQUEST ERROR")
-			resp.Body.Close()
 			continue
 		}
 		defer resp.Body.Close()
-
 		//fmt.Println(forwardLinkSlice[i]+" => https://rebrand.ly/"+slashTagSlice[i], " : ", resp.StatusCode)
 		if resp.StatusCode == 200 {
 			shortLinkResult = append(shortLinkResult, "https://rebrand.ly/"+slashTagSlice[i])
