@@ -2,6 +2,7 @@ package rebrandly
 
 import (
 	"encoding/json"
+	"errors"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -12,7 +13,7 @@ import (
 )
 
 func getDataFromEnv() (apiKey string, domainID string) {
-	config := config.GetConfig()
+	config := config.GetRBConfig()
 
 	apiKey = config.GetString("REBRANDLYAPIKEY")
 	domainID = config.GetString("REBRANDLYDOMAINID")
@@ -152,45 +153,57 @@ func checkAPIKey(apikey string) error {
 	//Use count link request to check if apikey is valid or not
 	req, err := http.NewRequest("GET", "https://api.rebrandly.com/v1/links/count", nil)
 	if err != nil {
-		log.Println("countLinkRebranly error")
+		log.Println("countLinkRebranly req error")
 		return err
 	}
 	req.Header.Set("Apikey", apikey)
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-		log.Println("countLinkRebranly error")
+		log.Println("countLinkRebranly resp error")
 		return err
 	}
 	defer resp.Body.Close()
 
 	countByte, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		log.Println("countLinkRebranly error")
+		log.Println("countLinkRebranly countByte error")
 		return err
 	}
 
 	var linkCounter linkCountType
 	err = json.Unmarshal(countByte, &linkCounter)
 	if err != nil {
-		log.Println("countLinkRebranly error")
+		log.Println("countLinkRebranly Unmarshal error")
 		return err
 	}
+
+	if linkCounter.Count == -1 {
+		return errors.New("Not an API key for rebrandly")
+	}
+
 	return nil
 }
 
 //SetRebrandlyAPIKey set new rebrandly to the config file
 func SetRebrandlyAPIKey(apikey string) error {
-	//FIXME: Viper function not support
+	config := config.GetRBConfig()
+
 	err := checkAPIKey(apikey)
 	if err != nil {
 		log.Printf("Can not validate the api key : %+v", err)
 		return err
 	}
 
-	config := config.GetConfig()
-
+	oldRBAPIKey := config.GetString("REBRANDLYAPIKEY")
 	config.Set("REBRANDLYAPIKEY", apikey)
+
+	err = config.WriteConfig()
+	if err != nil {
+		config.Set("REBRANDLYAPIKEY", oldRBAPIKey)
+		log.Printf("\nCan not write new config file : %+v \n \told val : %+v\n", err, oldRBAPIKey)
+		return err
+	}
 
 	return nil
 }

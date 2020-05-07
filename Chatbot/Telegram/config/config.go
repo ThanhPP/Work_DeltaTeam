@@ -6,7 +6,10 @@ import (
 	"github.com/spf13/viper"
 )
 
-var config *viper.Viper
+var (
+	config   *viper.Viper
+	rbConfig *viper.Viper
+)
 
 //Init read the config file
 func Init() {
@@ -21,11 +24,28 @@ func Init() {
 	if err := config.ReadInConfig(); err != nil {
 		log.Fatalf("Can not read the config file : %+v", err)
 	}
+
+	rbConfig = viper.New()
+	rbConfig.SetConfigName("rb_secret")
+	rbConfig.SetConfigType("env")
+
+	rbConfig.AddConfigPath(".")
+	rbConfig.AddConfigPath("../../config/")
+	rbConfig.AddConfigPath("config/")
+
+	if err := rbConfig.ReadInConfig(); err != nil {
+		log.Fatalf("Can not read the config file : %+v", err)
+	}
 }
 
 //GetConfig return the Viper to read config from file
 func GetConfig() *viper.Viper {
 	return config
+}
+
+//GetRBConfig return config for rebrandly
+func GetRBConfig() *viper.Viper {
+	return rbConfig
 }
 
 // var (

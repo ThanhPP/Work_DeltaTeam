@@ -35,6 +35,7 @@ func main() {
 		//handling command
 		if update.Message.IsCommand() {
 			msg := tb.NewMessage(update.Message.Chat.ID, "")
+
 			switch update.Message.Command() {
 			case "help":
 				msg.Text = "/createfwshortlink [range]"
@@ -91,7 +92,12 @@ func main() {
 				if len(arg) < 1 {
 					msg.Text = "setrebrandapi : no argument found"
 				} else {
-
+					err := rb.SetRebrandlyAPIKey(arg)
+					if err != nil {
+						msg.Text = fmt.Sprintf("setrebrandapi error : %+v ", err)
+					} else {
+						msg.Text = "setrebrandapi : set new API key successfully"
+					}
 				}
 
 			default:
