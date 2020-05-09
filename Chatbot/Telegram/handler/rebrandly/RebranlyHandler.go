@@ -12,23 +12,26 @@ import (
 	ggs "github.com/THANHPP/Work_DeltaTeam/Chatbot/Telegram/handler/googlesheett"
 )
 
-func getDataFromEnv() (apiKey string, domainID string) {
-	config := config.GetRBConfig()
+var (
+	rbConfig *config.RBConfig
+)
 
-	apiKey = config.GetString("REBRANDLYAPIKEY")
-	domainID = config.GetString("REBRANDLYDOMAINID")
-
-	return apiKey, domainID
+func getDataFromEnv() {
+	rbConfig = config.GetRBConfigObj()
 }
 
 //ShortLinkByRebrand
 func shortLinkByRebrand(forwardLinkSlice []string, slashTagSlice []string) (shortLinkResult []string, successCount int, errorCount int) {
-	apiKey, domainID := getDataFromEnv()
+	getDataFromEnv()
+	apiKey := rbConfig.APIKey
+	domainID := rbConfig.DomainID
+
 	if len(forwardLinkSlice) != len(slashTagSlice) {
 		log.Printf("\n\n\tshortLinkByRebrand : forwardLinkSlice-%+v slashTagSlice-%+v\n\n", len(forwardLinkSlice), len(slashTagSlice))
 		shortLinkResult = append(shortLinkResult, "Input length not match")
 		return shortLinkResult, -1, -1
 	}
+
 	for i := 0; i < len(forwardLinkSlice); i++ {
 		resp, err := http.Get("https://api.rebrandly.com/v1/links/new?apikey=" + apiKey + "&destination=http://" + forwardLinkSlice[i] + "&slashtag=" + slashTagSlice[i] + "&domain[id]=" + domainID)
 		// fmt.Println("https://api.rebrandly.com/v1/links/new?apikey=" + apiKey + "&destination=http://" + forwardLinkSlice[i] + "&slashtag=" + slashTagSlice[i] + "&domain[id]=" + domainID)
@@ -55,7 +58,8 @@ type linkCountType struct {
 }
 
 func countLinkRebranly() int {
-	apikey, _ := getDataFromEnv()
+	getDataFromEnv()
+	apikey := rbConfig.APIKey
 	//START : read number of shortlink created
 	req, err := http.NewRequest("GET", "https://api.rebrandly.com/v1/links/count", nil)
 	if err != nil {
@@ -90,6 +94,7 @@ func countLinkRebranly() int {
 
 //CreateShortLinkRebrandly get data from gg sheet and using rebrandly to create shortLink
 func CreateShortLinkRebrandly(inputRange string, inputFwdLinks []string) (shortLinkResult []string, successCount int, errorCount int, usedCount int) {
+	getDataFromEnv()
 	//Get range
 	firstNum, secondNum, err := ggs.ParseRange(inputRange)
 	if err != nil {
@@ -97,7 +102,7 @@ func CreateShortLinkRebrandly(inputRange string, inputFwdLinks []string) (shortL
 		return nil, -1, -1, -1
 	}
 	//Column assign
-	slashTagCol := "W"
+	slashTagCol := rbConfig.SlashTagColumn
 
 	//CreateShortLink
 	if dataRange := (secondNum - firstNum); dataRange <= 2 {
@@ -187,7 +192,7 @@ func checkAPIKey(apikey string) error {
 
 //SetRebrandlyAPIKey set new rebrandly to the config file
 func SetRebrandlyAPIKey(apikey string) error {
-	config := config.GetRBConfig()
+	getDataFromEnv()
 
 	err := checkAPIKey(apikey)
 	if err != nil {
@@ -195,13 +200,9 @@ func SetRebrandlyAPIKey(apikey string) error {
 		return err
 	}
 
-	oldRBAPIKey := config.GetString("REBRANDLYAPIKEY")
-	config.Set("REBRANDLYAPIKEY", apikey)
-
-	err = config.WriteConfig()
+	err = rbConfig.ChangeAPIKey(apikey)
 	if err != nil {
-		config.Set("REBRANDLYAPIKEY", oldRBAPIKey)
-		log.Printf("\nCan not write new config file : %+v \n \told val : %+v\n", err, oldRBAPIKey)
+		log.Printf("Can Change API Key : %+v", err)
 		return err
 	}
 

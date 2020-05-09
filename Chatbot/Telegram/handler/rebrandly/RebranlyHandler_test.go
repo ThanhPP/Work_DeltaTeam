@@ -6,13 +6,13 @@ import (
 	"github.com/THANHPP/Work_DeltaTeam/Chatbot/Telegram/config"
 )
 
-func TestGetDataFromEnv(t *testing.T) {
-	config.Init()
-	_, domainID := getDataFromEnv()
-	if domainID == "" {
-		t.Error("Can not get domain")
-	}
-}
+// func TestGetDataFromEnv(t *testing.T) {
+// 	config.Init()
+// 	_, domainID := getDataFromEnv()
+// 	if domainID == "" {
+// 		t.Error("Can not get domain")
+// 	}
+// }
 
 func TestCreateShortLinkRebrandly(t *testing.T) {
 	config.Init()

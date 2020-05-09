@@ -11,18 +11,22 @@ import (
 	ggs "github.com/THANHPP/Work_DeltaTeam/Chatbot/Telegram/handler/googlesheett"
 )
 
+var (
+	nameConfig config.NameDotConfig
+)
+
 //GetDataFromEnv get default data from env file
-func getDataFromEnv() (nameDomain string, nameAPIKey string, nameUsername string) {
-	config := config.GetConfig()
-	nameDomain = config.GetString("NAMEDOMAIN")
-	nameAPIKey = config.GetString("NAMEAPIKEY")
-	nameUsername = config.GetString("NAMEUSRNAME")
-	return nameDomain, nameAPIKey, nameUsername
+func getDataFromEnv() {
+	config.GetNameConfigObj()
 }
 
 //createForwardLinks receive store links and tempForwardlink to create forward link via name.com
 func createForwardLinks(storeLinks []string, tempForwardLinks []string) (forwardResult []string, successForwardCount int, errorForwardCount int) {
-	nameDomain, nameAPIKey, nameUsername := getDataFromEnv()
+	getDataFromEnv()
+	nameDomain := nameConfig.Domain
+	nameAPIKey := nameConfig.APIKey
+	nameUsername := nameConfig.Username
+
 	for i := 0; i < len(tempForwardLinks); i++ {
 		body := strings.NewReader(`{"host":"` + tempForwardLinks[i] + `.` + nameDomain + `","forwardsTo":"` + storeLinks[i] + `","type":"redirect"}`)
 
@@ -57,6 +61,7 @@ func createForwardLinks(storeLinks []string, tempForwardLinks []string) (forward
 
 //ForwardLinks create forward links from input range
 func ForwardLinks(inputRange string) (forwardResult []string, successForwardCount int, errorForwardCount int) {
+	getDataFromEnv()
 	//Get range
 	firstNum, secondNum, err := ggs.ParseRange(inputRange)
 	if err != nil {
@@ -64,8 +69,8 @@ func ForwardLinks(inputRange string) (forwardResult []string, successForwardCoun
 		return nil, -1, -1
 	}
 	//Column assign
-	storeLinksCol := "T"
-	tempForwardLinksCol := "U"
+	storeLinksCol := nameConfig.StoreLinkColumn
+	tempForwardLinksCol := nameConfig.TempForwardLinkColumn
 
 	if dataRange := (secondNum - firstNum); dataRange <= 2 {
 		storeLinks := ggs.GetDataFromRage(ggs.NewRange(firstNum, secondNum, storeLinksCol))

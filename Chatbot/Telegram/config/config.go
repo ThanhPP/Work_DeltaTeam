@@ -67,9 +67,9 @@ func GetTeleConfigObj() *TelebotConfig {
 
 //RBConfig contains config for rebrandly handler
 type RBConfig struct {
-	apiKey         string
-	domainID       string
-	slashTagColumn string
+	APIKey         string
+	DomainID       string
+	SlashTagColumn string
 }
 
 func rbConfigInit() {
@@ -95,9 +95,9 @@ func GetRBConfig() *viper.Viper {
 func GetRBConfigObj() *RBConfig {
 	rbConfig = GetRBConfig()
 	rbCf := &RBConfig{
-		apiKey:         rbConfig.GetString("REBRANDLYAPIKEY"),
-		domainID:       rbConfig.GetString("REBRANDLYDOMAINID"),
-		slashTagColumn: rbConfig.GetString("SLASHTAGCOLUMN"),
+		APIKey:         rbConfig.GetString("REBRANDLYAPIKEY"),
+		DomainID:       rbConfig.GetString("REBRANDLYDOMAINID"),
+		SlashTagColumn: rbConfig.GetString("SLASHTAGCOLUMN"),
 	}
 
 	return rbCf
@@ -107,15 +107,15 @@ func GetRBConfigObj() *RBConfig {
 func (rbcf *RBConfig) ChangeAPIKey(newAPIKey string) error {
 	rbConfig = GetRBConfig()
 
-	backupAPIKey := rbcf.apiKey
+	backupAPIKey := rbcf.APIKey
 
-	rbcf.apiKey = newAPIKey
+	rbcf.APIKey = newAPIKey
 
-	rbConfig.Set("REBRANDLYAPIKEY", rbcf.apiKey)
+	rbConfig.Set("REBRANDLYAPIKEY", rbcf.APIKey)
 
 	if err := rbConfig.WriteConfig(); err != nil {
-		rbcf.apiKey = backupAPIKey
-		rbConfig.Set("REBRANDLYAPIKEY", rbcf.apiKey)
+		rbcf.APIKey = backupAPIKey
+		rbConfig.Set("REBRANDLYAPIKEY", rbcf.APIKey)
 		return err
 	}
 
@@ -126,11 +126,11 @@ func (rbcf *RBConfig) ChangeAPIKey(newAPIKey string) error {
 
 //NameDotConfig name.com config object
 type NameDotConfig struct {
-	domain                string
-	username              string
-	apiKey                string
-	storeLinkColumn       string
-	tempForwardLinkColumn string
+	Domain                string
+	Username              string
+	APIKey                string
+	StoreLinkColumn       string
+	TempForwardLinkColumn string
 }
 
 func nameConfigInit() {
@@ -156,11 +156,11 @@ func GetNameConfigObj() *NameDotConfig {
 	nameCf := getNameConfig()
 
 	nameComCfObj := &NameDotConfig{
-		domain:                nameCf.GetString("NAMEDOMAIN"),
-		username:              nameCf.GetString("NAMEUSRNAME"),
-		apiKey:                nameCf.GetString("NAMEAPIKEY"),
-		storeLinkColumn:       nameCf.GetString("STORELINKCOLUMN"),
-		tempForwardLinkColumn: nameCf.GetString("TEMPFORWARDLINKCOLUMN"),
+		Domain:                nameCf.GetString("NAMEDOMAIN"),
+		Username:              nameCf.GetString("NAMEUSRNAME"),
+		APIKey:                nameCf.GetString("NAMEAPIKEY"),
+		StoreLinkColumn:       nameCf.GetString("STORELINKCOLUMN"),
+		TempForwardLinkColumn: nameCf.GetString("TEMPFORWARDLINKCOLUMN"),
 	}
 
 	return nameComCfObj
