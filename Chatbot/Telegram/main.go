@@ -23,7 +23,7 @@ func main() {
 	bot.Debug = true
 	log.Printf("Authorized on account %s", bot.Self.UserName)
 
-	u := tb.NewUpdate(0)
+	u := tb.NewUpdate(1)
 	u.Timeout = 60
 
 	updates, err := bot.GetUpdatesChan(u)

@@ -38,7 +38,11 @@ WORK_GetEin/WORK_GetEin
 
 #secret file
 **/*_secret.*
+**/**/*_secret.*
 *_secret*
+*_secret*.*
+
+# Sth else
 Chatbot/Telegram/handler/googlesheet/credentials_secret.json
 Chatbot/Telegram/Telegram
 Chatbot/Telegram/handler/googlesheett/telegramchatbotshortlink-064627d03d38.json

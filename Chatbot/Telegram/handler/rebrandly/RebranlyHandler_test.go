@@ -29,7 +29,7 @@ func TestSetRebrandlyAPIKey(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	cf := config.GetConfig()
+	cf := config.GetRBConfig()
 	val := cf.GetString("REBRANDLYAPIKEY")
 	if val != "d2b46b231a55436db161d83e8774f3b9" {
 		t.Error(val)
