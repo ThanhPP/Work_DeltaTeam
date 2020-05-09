@@ -28,8 +28,8 @@ func TestNewRange(t *testing.T) {
 
 func TestGetDataFromRage(t *testing.T) {
 	config.Init()
-	val := GetDataFromRage("A1:A1")
-	if val[0] != "a" {
+	val := GetDataFromRage("B1:B1")
+	if val[0] != "AdvertiserAcc" {
 		t.Error(val)
 	}
 }

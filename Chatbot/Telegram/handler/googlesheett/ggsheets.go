@@ -8,7 +8,6 @@ import (
 	"errors"
 	"io/ioutil"
 	"log"
-	"runtime"
 	"strconv"
 	"strings"
 
@@ -19,29 +18,18 @@ import (
 )
 
 var (
-	windowsPath   string
-	linuxPath     string
-	spreadSheetID string
+	ggsConfig *config.GGSConfig
 )
 
 func getDataFromEnv() {
-	config := config.GetConfig()
-	windowsPath = config.GetString("WINDOWSGGSSCRPATH")
-	linuxPath = config.GetString("LINUXGGSSCRPATH")
-	spreadSheetID = config.GetString("SPREADSHEETID")
+	ggsConfig = config.GetGGSConfigObj()
 }
 
 //CreateClient create a google sheet service using pre-config
 func createClient() (*sheets.Service, error) {
 	getDataFromEnv()
-	var path string
-	if runtime.GOOS == "windows" {
-		path = windowsPath
-	} else {
-		path = linuxPath
-	}
 
-	data, err := ioutil.ReadFile(path)
+	data, err := ioutil.ReadFile(ggsConfig.Path)
 	if err != nil {
 		log.Printf("Unable to read client secret file: %v", err)
 	}
@@ -66,8 +54,8 @@ func createClient() (*sheets.Service, error) {
 func GetDataFromRage(sheetRange string) (rows []string) {
 	getDataFromEnv()
 	// constant
-	spreadsheetID := spreadSheetID
-	readRange := "Product!" + sheetRange
+	spreadsheetID := ggsConfig.SpreadSheetID
+	readRange := ggsConfig.TableName + "!" + sheetRange
 	//create a service
 	srv, err := createClient()
 	if err != nil {

@@ -2,6 +2,7 @@ package config
 
 import (
 	"log"
+	"runtime"
 
 	"github.com/spf13/viper"
 )
@@ -10,6 +11,7 @@ var (
 	config     *viper.Viper
 	rbConfig   *viper.Viper
 	nameConfig *viper.Viper
+	ggsConfig  *viper.Viper
 )
 
 //Init read the config file
@@ -17,6 +19,7 @@ func Init() {
 	teleConfigInit()
 	rbConfigInit()
 	nameConfigInit()
+	ggsConfigInit()
 }
 
 //------------------------------------------------------------------------------------------------------------
@@ -64,8 +67,9 @@ func GetTeleConfigObj() *TelebotConfig {
 
 //RBConfig contains config for rebrandly handler
 type RBConfig struct {
-	apiKey   string
-	domainID string
+	apiKey         string
+	domainID       string
+	slashTagColumn string
 }
 
 func rbConfigInit() {
@@ -91,8 +95,9 @@ func GetRBConfig() *viper.Viper {
 func GetRBConfigObj() *RBConfig {
 	rbConfig = GetRBConfig()
 	rbCf := &RBConfig{
-		apiKey:   rbConfig.GetString("REBRANDLYAPIKEY"),
-		domainID: rbConfig.GetString("REBRANDLYDOMAINID"),
+		apiKey:         rbConfig.GetString("REBRANDLYAPIKEY"),
+		domainID:       rbConfig.GetString("REBRANDLYDOMAINID"),
+		slashTagColumn: rbConfig.GetString("SLASHTAGCOLUMN"),
 	}
 
 	return rbCf
@@ -121,14 +126,16 @@ func (rbcf *RBConfig) ChangeAPIKey(newAPIKey string) error {
 
 //NameDotConfig name.com config object
 type NameDotConfig struct {
-	domain   string
-	username string
-	apiKey   string
+	domain                string
+	username              string
+	apiKey                string
+	storeLinkColumn       string
+	tempForwardLinkColumn string
 }
 
 func nameConfigInit() {
 	nameConfig = viper.New()
-	nameConfig.SetConfigName("rb_secret")
+	nameConfig.SetConfigName("namedotcom_secret")
 	nameConfig.SetConfigType("env")
 
 	nameConfig.AddConfigPath(".")
@@ -149,12 +156,62 @@ func GetNameConfigObj() *NameDotConfig {
 	nameCf := getNameConfig()
 
 	nameComCfObj := &NameDotConfig{
-		domain:   nameCf.GetString("NAMEDOMAIN"),
-		username: nameCf.GetString("NAMEUSRNAME"),
-		apiKey:   nameCf.GetString("NAMEAPIKEY"),
+		domain:                nameCf.GetString("NAMEDOMAIN"),
+		username:              nameCf.GetString("NAMEUSRNAME"),
+		apiKey:                nameCf.GetString("NAMEAPIKEY"),
+		storeLinkColumn:       nameCf.GetString("STORELINKCOLUMN"),
+		tempForwardLinkColumn: nameCf.GetString("TEMPFORWARDLINKCOLUMN"),
 	}
 
 	return nameComCfObj
+}
+
+//------------------------------------------------------------------------------------------------------------
+
+//GGSConfig google sheet config
+type GGSConfig struct {
+	Path          string
+	SpreadSheetID string
+	TableName     string
+}
+
+func ggsConfigInit() {
+	ggsConfig = viper.New()
+	ggsConfig.SetConfigName("googlesheet_secret")
+	ggsConfig.SetConfigType("env")
+
+	ggsConfig.AddConfigPath(".")
+	ggsConfig.AddConfigPath("../../config_file/")
+	ggsConfig.AddConfigPath("../config_file/")
+
+	if err := ggsConfig.ReadInConfig(); err != nil {
+		log.Fatalf("Can not read the config file : %+v", err)
+	}
+}
+
+func getggsConfig() *viper.Viper {
+	return ggsConfig
+}
+
+//GetGGSConfigObj object contains google sheet config
+func GetGGSConfigObj() *GGSConfig {
+	ggsCf := getggsConfig()
+
+	//choose path
+	var pathOS string
+	if runtime.GOOS == "windows" {
+		pathOS = ggsCf.GetString("WINDOWSGGSSCRPATH")
+	} else {
+		pathOS = ggsCf.GetString("LINUXGGSSCRPATH")
+	}
+
+	ggsCfObj := &GGSConfig{
+		Path:          pathOS,
+		SpreadSheetID: ggsCf.GetString("SPREADSHEETID"),
+		TableName:     ggsCf.GetString("TABLENAME"),
+	}
+
+	return ggsCfObj
 }
 
 // var (
